@@ -1,0 +1,35 @@
+{
+  "name": "react-express-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "backend": "npm run dev -w backend",
+    "frontend": "npm run dev -w frontend",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "lint:fix": "prettier --write backend/src frontend/src && eslint --fix backend/src frontend/src",
+    "test:backend": "npm test -w backend",
+    "test:frontend": "npm test -w frontend",
+    "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "prettier --write backend/src frontend/src && eslint --fix backend/src frontend/src && git add -A ."
+    }
+  },
+  "author": "dstamenkovic",
+  "license": "ISC",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
+    "axios": "^1.7.9",
+    "react-redux": "^9.2.0"
+  }
+}
