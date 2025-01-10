@@ -1,7 +1,7 @@
-export const createCurrentDays = (currentCalendarDay: Date) => {
+export const createCurrentDays = (currentCalendarMonth: Date) => {
   const firstDayOfMonth = new Date(
-    currentCalendarDay.getFullYear(),
-    currentCalendarDay.getMonth(),
+    currentCalendarMonth.getFullYear(),
+    currentCalendarMonth.getMonth(),
     1,
   );
   const weekdayOfFirstDay = firstDayOfMonth.getDay();
@@ -18,11 +18,11 @@ export const createCurrentDays = (currentCalendarDay: Date) => {
     }
 
     const calendarDay = {
-      currentMonth: firstDayOfMonth.getMonth() === currentCalendarDay.getMonth(),
+      currentMonth: firstDayOfMonth.getMonth() === currentCalendarMonth.getMonth(),
       date: new Date(firstDayOfMonth),
       month: firstDayOfMonth.getMonth(),
       number: firstDayOfMonth.getDate(),
-      selected: firstDayOfMonth.toDateString() === currentCalendarDay.toDateString(),
+      today: firstDayOfMonth.toDateString() === currentCalendarMonth.toDateString(),
       year: firstDayOfMonth.getFullYear(),
     };
 

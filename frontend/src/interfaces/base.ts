@@ -7,3 +7,5 @@ export interface BaseSliceState<T> {
 export interface BaseResponse<T> {
   data: T;
 }
+
+export type UnionFromObject<T extends object> = T[keyof T];

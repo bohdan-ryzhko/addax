@@ -1,0 +1,58 @@
+.modalWrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease-out,
+    visibility 0.3s ease-out;
+
+  background-color: #00000059;
+}
+
+.modalWrapper.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  position: relative;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 40px 48px;
+  text-align: center;
+
+  transform: translateY(20px);
+  opacity: 0;
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+}
+
+.modalWrapper.active .modal {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.closeBtn {
+  background: transparent;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 0;
+  color: black;
+  cursor: pointer;
+  font-size: 20px;
+  width: 25px;
+  height: 25px;
+}

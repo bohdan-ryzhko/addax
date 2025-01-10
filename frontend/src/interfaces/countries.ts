@@ -1,7 +1,10 @@
 import { BaseSliceState } from './base';
 
 export type Country = {
-  key: string;
+  countryCode: string;
+  name: string;
 };
 
-export type CountriesState = BaseSliceState<Country[]>;
+export interface CountriesState extends BaseSliceState<Country[]> {
+  selectedCountry: Country | null;
+}

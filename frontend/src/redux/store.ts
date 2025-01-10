@@ -1,15 +1,20 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { countriesReducer } from './countries';
-
-axios.defaults.baseURL = 'https://date.nager.at/';
+import { holidaysReducer } from './holidays';
+import { calendarReducer } from './calendar';
 
 export const reducer = combineReducers({
   countries: countriesReducer,
+  holidays: holidaysReducer,
+  calendar: calendarReducer,
 });
 
 export const store = configureStore({
   reducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
