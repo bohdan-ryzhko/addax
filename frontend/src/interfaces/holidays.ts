@@ -11,4 +11,4 @@ export type Holiday = {
   types: string[];
 };
 
-export interface holidaysState extends BaseSliceState<Holiday[]> {}
+export interface HolidaysState extends BaseSliceState<Holiday[]> {}

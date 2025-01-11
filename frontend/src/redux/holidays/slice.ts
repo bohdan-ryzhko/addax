@@ -1,8 +1,8 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { holidaysState } from '../../interfaces';
+import { HolidaysState } from '../../interfaces';
 import { fetchPublicHolidays } from './thunks';
 
-const initialState: holidaysState = {
+const initialState: HolidaysState = {
   loading: false,
   data: [],
   error: null,

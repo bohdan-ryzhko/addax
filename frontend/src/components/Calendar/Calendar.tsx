@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { CalendarDays } from './parts';
 import { useAppDispatch, useReduxStore } from '../../hooks';
 import { setCurrentMonth, setSelectedCountry, setSelectedDay } from '../../redux';
-import { Dropdown, Modal } from '..';
+import { Dropdown } from '..';
 import { months, weekdays } from '../../constants';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
@@ -82,17 +82,6 @@ export const Calendar: FC = () => {
           />
         </div>
       </div>
-      <Modal
-        active={Boolean(calendar.selectedDay)}
-        setActive={() => dispatch(setSelectedDay(null))}>
-        {!countries.selectedCountry && <p>You need to select a country</p>}
-        {calendar.selectedDay && countries.selectedCountry && (
-          <p>
-            <span>{countries.selectedCountry.name}</span>
-            <span>{calendar.selectedDay.getDate()}</span>
-          </p>
-        )}
-      </Modal>
     </>
   );
 };

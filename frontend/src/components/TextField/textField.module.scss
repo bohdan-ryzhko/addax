@@ -1,0 +1,44 @@
+.wrapper {
+  min-width: 100%;
+  position: relative;
+}
+
+.inputWrapper {
+  height: 65px;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+
+  & > span {
+    margin-left: 8px;
+  }
+}
+
+.input,
+.textarea {
+  padding: 10px 14px;
+  border-width: 1px;
+  min-width: 100%;
+  border-radius: 8px;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 60px;
+  max-height: 200px;
+}
+
+.errorText {
+  position: absolute;
+  left: 8px;
+  bottom: -15px;
+  font-size: 14px;
+  color: rgb(181, 0, 0);
+}

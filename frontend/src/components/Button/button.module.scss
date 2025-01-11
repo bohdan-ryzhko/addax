@@ -1,0 +1,46 @@
+.button {
+  min-width: 100%;
+  padding: 12px 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #30b0c7;
+  color: #ffffff;
+  display: inline-block;
+
+  & > span {
+    position: relative;
+  }
+}
+
+.disabledButton {
+  opacity: 0.25;
+  cursor: no-drop;
+}
+
+.text {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.loader {
+  position: absolute;
+  right: -30px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
