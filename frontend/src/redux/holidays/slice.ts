@@ -3,7 +3,7 @@ import { HolidaysState } from '../../interfaces';
 import { fetchPublicHolidays } from './thunks';
 
 const initialState: HolidaysState = {
-  loading: false,
+  fetching: false,
   data: [],
   error: null,
 };
@@ -15,17 +15,17 @@ const holidaysSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchPublicHolidays.pending, state => {
-        state.loading = true;
+        state.fetching = true;
       })
       .addCase(fetchPublicHolidays.fulfilled, (state, action) => {
         state.data = action.payload;
       })
       .addMatcher(isAnyOf(fetchPublicHolidays.fulfilled), state => {
-        state.loading = false;
+        state.fetching = false;
         state.error = null;
       })
       .addMatcher(isAnyOf(fetchPublicHolidays.rejected), (state, action) => {
-        state.loading = false;
+        state.fetching = false;
         state.error = action.error;
       });
   },

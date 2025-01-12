@@ -1,7 +1,11 @@
 export interface BaseSliceState<T> {
-  loading: boolean;
+  fetching: boolean;
   data: T;
   error: unknown;
+}
+
+export interface BaseSliceStateWithCreate<T> extends BaseSliceState<T> {
+  creating: boolean;
 }
 
 export interface BaseResponse<T> {

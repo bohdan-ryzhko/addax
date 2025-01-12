@@ -10,6 +10,10 @@ const taskSchema = new Schema<ITask>({
     type: String,
     required: [true, 'Description is required'],
   },
+  date: {
+    type: String,
+    required: [true, 'Date is required'],
+  },
 });
 
 export const Task = model<ITask>('Task', taskSchema);

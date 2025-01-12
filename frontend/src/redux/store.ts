@@ -3,6 +3,8 @@ import { countriesReducer } from './countries';
 import { holidaysReducer } from './holidays';
 import { calendarReducer } from './calendar';
 import { tasksReducer } from './tasks';
+// import axios from 'axios';
+// import { toast } from 'react-toastify';
 
 export const reducer = combineReducers({
   countries: countriesReducer,

@@ -3,6 +3,11 @@ import { Document, Types } from 'mongoose';
 export interface ITask {
   name: string;
   description: string;
+  date: string;
+}
+
+export interface ITaskBody extends ITask {
+  countryCode: string;
 }
 
 export interface ITaskDTO extends ITask {

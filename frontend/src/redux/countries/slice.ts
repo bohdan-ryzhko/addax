@@ -3,7 +3,7 @@ import { CountriesState, Country } from '../../interfaces';
 import { fetchAvailableCountries } from './thunks';
 
 const initialState: CountriesState = {
-  loading: false,
+  fetching: false,
   data: [],
   error: null,
   selectedCountry: null,
@@ -20,17 +20,17 @@ const countriesSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchAvailableCountries.pending, state => {
-        state.loading = true;
+        state.fetching = true;
       })
       .addCase(fetchAvailableCountries.fulfilled, (state, acion) => {
         state.data = acion.payload;
       })
       .addMatcher(isAnyOf(fetchAvailableCountries.fulfilled), state => {
-        state.loading = false;
+        state.fetching = false;
         state.error = null;
       })
       .addMatcher(isAnyOf(fetchAvailableCountries.rejected), (state, action) => {
-        state.loading = false;
+        state.fetching = false;
         state.error = action.error;
       });
   },

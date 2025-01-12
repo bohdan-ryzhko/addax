@@ -14,18 +14,20 @@
   height: 110px;
   position: relative;
   border-radius: 4px;
+  padding: 5px;
 
   background-color: #eee4e4;
+
+  &.disabled {
+    cursor: no-drop;
+    opacity: 0.4;
+  }
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 
   & p {
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    right: 10px;
     color: #a6a6a6;
   }
 }
@@ -35,5 +37,9 @@
 
   & p {
     color: #000000;
+  }
+
+  & p.today {
+    color: rgb(191, 0, 0);
   }
 }

@@ -4,12 +4,14 @@ import { AxiosResponse } from 'axios';
 
 import { Holiday } from '../../interfaces';
 import { nagerDateConfig } from '../../lib';
+import { toast } from 'react-toastify';
+import { getErrorMessage } from '../../utils';
 
 const HolidaysEndpoints = {
   api: 'api',
   v3: 'v3',
   publicHolidays(year: number, countryCode: string) {
-    return `${this.api}/${this.v3}/publicHolidays/${year}/${countryCode}`;
+    return `${this.api}/${this.v3}/PublicHolidays/${year}/${countryCode}`;
   },
 };
 
@@ -24,6 +26,7 @@ export const fetchPublicHolidays = createAsyncThunk<
 
     return response.data;
   } catch (error: any) {
+    toast.error(getErrorMessage(error));
     return rejectWithValue(error);
   }
 });
