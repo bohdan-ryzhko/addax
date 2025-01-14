@@ -5,6 +5,8 @@ export const findTasks = () => Task.find();
 
 export const findTaskById = (id: string) => Task.findById(id);
 
+export const findTasksByDate = (date: string) => Task.find({ date });
+
 export const addTask = (task: ITask) => Task.create(task);
 
 export const deleteTaskById = (id: string) => Task.findByIdAndDelete(id);

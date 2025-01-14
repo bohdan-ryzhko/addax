@@ -1,4 +1,4 @@
-import { BaseResponse, BaseSliceStateWithCreate } from './base';
+import { BaseResponse, BaseSliceState } from './base';
 
 export type Task = {
   name: string;
@@ -19,4 +19,7 @@ export interface ICreateTaskResponse extends BaseResponse<Task> {}
 
 export interface IFetchTaskResponse extends BaseResponse<Task[]> {}
 
-export interface TasksState extends BaseSliceStateWithCreate<Task[]> {}
+export interface TasksState extends BaseSliceState<Task[]> {
+  creating: boolean;
+  updating: boolean;
+}

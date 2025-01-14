@@ -1,6 +1,6 @@
 import { TaskDto } from '../dtos';
-import { Holiday, ITaskBody } from '../interfaces';
-import { addTask, findTasks } from '../repositories';
+import { Holiday, ITaskBody, ITaskUpdateBody } from '../interfaces';
+import { addTask, findTaskById, findTasks, findTasksByDate, updateTaskById } from '../repositories';
 import { ctrlWrapper, HttpError } from '../utils';
 import { nagerDateConfig } from '../lib';
 import { AxiosResponse } from 'axios';
@@ -36,7 +36,9 @@ export const checkIsHoliday = ctrlWrapper(async (req, res, next) => {
 export const createTask = ctrlWrapper(async (req, res) => {
   const { name, description, date }: ITaskBody = req.body;
 
-  const createdTask = await addTask({ name, description, date });
+  const existingTasksByDate = await findTasksByDate(date);
+
+  const createdTask = await addTask({ name, description, date, order: existingTasksByDate.length });
 
   await createdTask.save();
 
@@ -45,4 +47,36 @@ export const createTask = ctrlWrapper(async (req, res) => {
   const data = TaskDto(createdTask);
 
   res.status(201).json({ data });
+});
+
+export const updateTask = ctrlWrapper(async (req, res) => {
+  const taskId = req.params?.id;
+
+  const task: ITaskUpdateBody = req.body;
+
+  console.log('task', task);
+
+  if (!taskId) throw HttpError({ status: 400, message: 'Task ID is required params' });
+
+  const foundTask = await findTaskById(taskId);
+
+  if (!foundTask) throw HttpError({ status: 404, message: 'Task not found' });
+
+  const updatedTask = await updateTaskById(taskId, task);
+
+  if (!updatedTask) throw HttpError({ status: 500 });
+
+  if (task.reason === 'DROP') {
+    const foundTasksByDate = await findTasksByDate(task.date);
+
+    await Promise.all(
+      foundTasksByDate
+        .filter(task => task._id.toString() !== taskId)
+        .map(async task => await updateTaskById(task._id.toString(), { order: task.order - 1 })),
+    );
+  }
+
+  const data = TaskDto(updatedTask);
+
+  res.status(200).json({ data });
 });

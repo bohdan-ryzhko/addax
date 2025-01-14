@@ -3,20 +3,27 @@
   flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
-  box-sizing: border-box;
-  justify-content: center;
+  overflow-y: auto;
   gap: 4px;
+  padding-bottom: 2.3rem;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
 }
 
 .calendarDay {
-  cursor: pointer;
   flex-basis: calc(100% / 7 - 4px);
-  height: 110px;
+  height: 180px;
   position: relative;
   border-radius: 4px;
   padding: 5px;
-
+  overflow: hidden;
   background-color: #eee4e4;
+  transition: all 300ms ease-in-out;
+  display: flex;
+  flex-direction: column;
 
   &.disabled {
     cursor: no-drop;
@@ -42,4 +49,33 @@
   & p.today {
     color: rgb(191, 0, 0);
   }
+}
+
+.createTask {
+  padding: 4px 8px !important;
+  width: 2rem;
+  height: 1.5rem;
+
+  &.disabled {
+    cursor: no-drop;
+  }
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-grow: 1;
+  gap: 0.4rem;
+}
+
+.taskItem {
+  padding: 0.4rem;
+  background-color: #fff;
+  border-radius: 0.4rem;
+}
+
+.description {
+  white-space: wrap;
+  word-break: break-all;
 }

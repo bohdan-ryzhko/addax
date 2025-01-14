@@ -7,3 +7,11 @@ export const validateCreateTaskData = Joi.object<ITaskBody>({
   date: Joi.string().required(),
   countryCode: Joi.string().required(),
 });
+
+export const validateUpdateTaskData = validateCreateTaskData
+  .fork(['name', 'description', 'date'], schema => schema.optional())
+  .append({
+    order: Joi.number().optional(),
+    countryCode: Joi.string().required(),
+    reason: Joi.string().optional(),
+  });

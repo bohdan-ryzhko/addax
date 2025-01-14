@@ -14,6 +14,9 @@ const taskSchema = new Schema<ITask>({
     type: String,
     required: [true, 'Date is required'],
   },
+  order: {
+    type: Number,
+  },
 });
 
 export const Task = model<ITask>('Task', taskSchema);

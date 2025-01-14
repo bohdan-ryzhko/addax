@@ -1,7 +1,12 @@
 import { FC, useEffect, useRef } from 'react';
 import { Calendar, Modal } from '../../components';
 import { useAppDispatch, useReduxStore } from '../../hooks';
-import { fetchAvailableCountries, fetchPublicHolidays, setSelectedDay } from '../../redux';
+import {
+  fetchAvailableCountries,
+  fetchPublicHolidays,
+  fetchTasks,
+  setSelectedDay,
+} from '../../redux';
 import { CreateTaskForm } from './parts';
 
 export const CalendarPage: FC = () => {
@@ -15,6 +20,10 @@ export const CalendarPage: FC = () => {
 
     dispatch(fetchAvailableCountries());
   }, [countries.data.length, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, [dispatch]);
 
   useEffect(() => {
     const currentYear = calendar.currentMonth.getFullYear();

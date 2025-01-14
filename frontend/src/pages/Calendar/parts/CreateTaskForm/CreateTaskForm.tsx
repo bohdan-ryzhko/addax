@@ -1,14 +1,16 @@
-import { useFormik } from 'formik';
 import { FC } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { FormikHelpers, useFormik } from 'formik';
 
 import { CreateTaskValues } from '../../../../interfaces';
+import { useAppDispatch, useReduxStore } from '../../../../hooks';
+import { createTask, setSelectedDay } from '../../../../redux';
 import { Button, TextArea, TextField } from '../../../../components';
+
+import { getDisabled, getFormattedDate } from '../../../../utils';
 import { validationSchema } from './utils';
 
 import styles from './createTaskForm.module.scss';
-import { getDisabled, getFormattedDate } from '../../../../utils';
-import { useAppDispatch, useReduxStore } from '../../../../hooks';
-import { createTask } from '../../../../redux';
 
 const initialValues: CreateTaskValues = {
   name: '',
@@ -19,17 +21,25 @@ export const CreateTaskForm: FC = () => {
   const { calendar, countries, tasks } = useReduxStore();
   const dispatch = useAppDispatch();
 
-  const onSubmit = (values: CreateTaskValues) => {
+  const onSubmit = async (
+    values: CreateTaskValues,
+    { resetForm }: FormikHelpers<CreateTaskValues>,
+  ) => {
     if (!calendar.selectedDay || !countries.selectedCountry) return;
 
-    dispatch(
+    const createdTaskResponse = await dispatch(
       createTask({
         name: values.name,
         description: values.description,
         date: getFormattedDate(calendar.selectedDay),
         countryCode: countries.selectedCountry.countryCode,
       }),
-    );
+    ).then(unwrapResult);
+
+    if (createdTaskResponse.data) {
+      resetForm();
+      dispatch(setSelectedDay(null));
+    }
   };
 
   const formik = useFormik({

@@ -1,12 +1,21 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
 import { countriesReducer } from './countries';
 import { holidaysReducer } from './holidays';
 import { calendarReducer } from './calendar';
 import { tasksReducer } from './tasks';
-// import axios from 'axios';
-// import { toast } from 'react-toastify';
+import { authReducer } from './auth';
+
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['accessToken', 'refreshToken'],
+};
 
 export const reducer = combineReducers({
+  auth: persistReducer(authPersistConfig, authReducer),
   countries: countriesReducer,
   holidays: holidaysReducer,
   calendar: calendarReducer,
@@ -20,6 +29,8 @@ export const store = configureStore({
       serializableCheck: false,
     }),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

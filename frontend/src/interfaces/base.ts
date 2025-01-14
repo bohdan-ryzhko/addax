@@ -1,11 +1,9 @@
+import { routes } from '../constants';
+
 export interface BaseSliceState<T> {
   fetching: boolean;
   data: T;
   error: unknown;
-}
-
-export interface BaseSliceStateWithCreate<T> extends BaseSliceState<T> {
-  creating: boolean;
 }
 
 export interface BaseResponse<T> {
@@ -13,3 +11,5 @@ export interface BaseResponse<T> {
 }
 
 export type UnionFromObject<T extends object> = T[keyof T];
+
+export type RoutesType = (typeof routes)[keyof typeof routes];
