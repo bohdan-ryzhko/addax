@@ -4,7 +4,8 @@ import {
   ILoginResponse,
   IRegistrationResponse,
   IFetchUserResponse,
-  IAuthData,
+  ILoginData,
+  IRegistrationData,
 } from '../../interfaces';
 import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -29,7 +30,7 @@ const AuthEndpoints = {
   },
 };
 
-export const registration = createAsyncThunk<IRegistrationResponse, IAuthData>(
+export const registration = createAsyncThunk<IRegistrationResponse, IRegistrationData>(
   'auth/registration',
   async (payload, { rejectWithValue }) => {
     try {
@@ -48,7 +49,7 @@ export const registration = createAsyncThunk<IRegistrationResponse, IAuthData>(
   },
 );
 
-export const login = createAsyncThunk<ILoginResponse, IAuthData>(
+export const login = createAsyncThunk<ILoginResponse, ILoginData>(
   'auth/login',
   async (payload, { rejectWithValue }) => {
     try {

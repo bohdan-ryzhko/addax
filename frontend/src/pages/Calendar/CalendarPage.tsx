@@ -1,12 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { Calendar, Modal } from '../../components';
 import { useAppDispatch, useReduxStore } from '../../hooks';
-import {
-  fetchAvailableCountries,
-  fetchPublicHolidays,
-  fetchTasks,
-  setSelectedDay,
-} from '../../redux';
+import { fetchPublicHolidays, fetchTasks, setSelectedDay } from '../../redux';
 import { CreateTaskForm } from './parts';
 
 export const CalendarPage: FC = () => {
@@ -14,12 +9,6 @@ export const CalendarPage: FC = () => {
   const { calendar, countries } = useReduxStore();
   const previousYearRef = useRef<number | null>(null);
   const previousCountryRef = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (countries.data.length > 0) return;
-
-    dispatch(fetchAvailableCountries());
-  }, [countries.data.length, dispatch]);
 
   useEffect(() => {
     dispatch(fetchTasks());

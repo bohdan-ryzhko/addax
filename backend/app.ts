@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import { authUsersRouter, tasksRouter } from './src/routes';
+import { authUsersRouter, tasksRouter, projectRouter } from './src/routes';
 import { errorHandler, notFound } from './src/middlewares';
 
 dotenv.config();
@@ -17,6 +17,9 @@ app.use('/api/v1/users/auth', authUsersRouter);
 
 // tasks
 app.use('/api/v1/tasks', tasksRouter);
+
+// projects
+app.use('/api/v1/projects', projectRouter);
 
 app.use(notFound);
 app.use(errorHandler);

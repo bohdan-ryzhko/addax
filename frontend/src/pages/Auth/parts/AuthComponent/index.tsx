@@ -2,32 +2,45 @@ import { FC } from 'react';
 import { useFormik } from 'formik';
 
 import { useReduxStore } from '../../../../hooks';
-import { IAuthData } from '../../../../interfaces';
-import { Button, TextField } from '../../../../components';
+import { ILoginData, IRegistrationData } from '../../../../interfaces';
+import { Button, Dropdown, TextField } from '../../../../components';
 
-import { validationSchema } from './utils';
+import { validationLoginSchema, validationRegistrationSchema } from './utils';
 
 import styles from './auth.module.scss';
 
-const initialValues: IAuthData = {
+const initialValuesLogin: ILoginData = {
   email: '',
   password: '',
 };
 
+const initialValuesRegistration: IRegistrationData = {
+  email: '',
+  password: '',
+  countryCode: '',
+};
+
 type Props = {
-  onSubmit: (values: IAuthData) => void;
+  onSubmit: (values: ILoginData | IRegistrationData) => void;
   title: string;
   buttonText: string;
 };
 
 export const AuthComponent: FC<Props> = ({ onSubmit, title, buttonText }) => {
-  const { auth } = useReduxStore();
+  const { auth, countries } = useReduxStore();
+
+  const iRegistration = title === 'Registration';
 
   const formik = useFormik({
-    initialValues,
+    initialValues: iRegistration ? initialValuesRegistration : initialValuesLogin,
     onSubmit,
-    validationSchema,
+    validationSchema: iRegistration ? validationRegistrationSchema : validationLoginSchema,
   });
+
+  const dropdownList = countries.data.map(({ countryCode, name }) => ({
+    id: countryCode,
+    label: name,
+  }));
 
   return (
     <div className={styles.container}>
@@ -48,6 +61,22 @@ export const AuthComponent: FC<Props> = ({ onSubmit, title, buttonText }) => {
             type="password"
             placeholder="•••••••••"
           />
+
+          {iRegistration && (
+            <div className={styles.dropdownWrapper}>
+              <Dropdown
+                list={dropdownList}
+                element={item => <p>{item.label}</p>}
+                onChange={selectCountry => formik.setFieldValue('countryCode', selectCountry.id)}
+              />
+              {(formik.errors as IRegistrationData).countryCode &&
+                (formik.touched as unknown as IRegistrationData).countryCode && (
+                  <span className="errorText">
+                    {(formik.errors as IRegistrationData).countryCode}
+                  </span>
+                )}
+            </div>
+          )}
 
           <Button text={buttonText} type="submit" loading={auth.loading} />
         </form>

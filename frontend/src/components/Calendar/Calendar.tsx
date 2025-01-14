@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { CalendarDays } from './parts';
 import { useAppDispatch, useReduxStore } from '../../hooks';
-import { setCurrentMonth, setSelectedCountry, setSelectedDay } from '../../redux';
-import { Dropdown } from '..';
+import { logout, setCurrentMonth, setSelectedDay } from '../../redux';
 import { months, weekdays } from '../../constants';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { Button } from '../index';
 
 import styles from './calendar.module.scss';
 
@@ -12,7 +12,7 @@ const monthsArray = Object.values(months);
 const weekdaysArray = Object.values(weekdays);
 
 export const Calendar: FC = () => {
-  const { calendar, countries } = useReduxStore();
+  const { calendar, auth } = useReduxStore();
   const dispatch = useAppDispatch();
 
   const currentYear = calendar.currentMonth.getFullYear();
@@ -31,11 +31,6 @@ export const Calendar: FC = () => {
       );
     };
 
-  const dropdownList = countries.data.map(({ countryCode, name }) => ({
-    id: countryCode,
-    label: name,
-  }));
-
   return (
     <>
       <div className={styles.calendar}>
@@ -53,17 +48,11 @@ export const Calendar: FC = () => {
               {monthsArray[calendar.currentMonth.getMonth()]} {currentYear}
             </h2>
           </div>
-          <Dropdown
-            list={dropdownList}
-            element={item => <p>{item.label}</p>}
-            onChange={selectCountry =>
-              dispatch(
-                setSelectedCountry({
-                  countryCode: selectCountry.id,
-                  name: selectCountry.label,
-                }),
-              )
-            }
+          <Button
+            loading={auth.loading || auth.refreshing}
+            text={'Logout'}
+            className={styles.logoutBtn}
+            onClick={() => dispatch(logout())}
           />
         </div>
         <div className={styles.calendarBody}>

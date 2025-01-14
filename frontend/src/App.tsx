@@ -1,9 +1,10 @@
+import { Routes, Route } from 'react-router-dom';
+
 import { LoadingScreen, NotificationsContainer } from './components';
 import { routes } from './constants';
 import { PrivateRoute, RestrictedRoute } from './hocs';
 import { useReduxStore, useRefresh } from './hooks';
 import { AuthPage, CalendarPage } from './pages';
-import { Routes, Route } from 'react-router-dom';
 
 function App() {
   const { auth } = useReduxStore();

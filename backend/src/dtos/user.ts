@@ -1,6 +1,6 @@
-import { IUserDocument, IUserDto } from '../interfaces';
+import { IUserDocument, IUserDTO } from '../interfaces';
 
-export const UserDto = (userDocument: IUserDocument): IUserDto => ({
+export const UserDto = (userDocument: IUserDocument): IUserDTO => ({
   id: userDocument._id.toString(),
   email: userDocument.email,
   countryCode: userDocument.countryCode,

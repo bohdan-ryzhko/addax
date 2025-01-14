@@ -1,11 +1,15 @@
 import { BaseResponse, BaseSliceState } from './base';
 
-export interface IAuthData {
+export interface ILoginData {
   email: string;
   password: string;
 }
 
-export interface IUser extends IAuthData {
+export interface IRegistrationData extends ILoginData {
+  countryCode: string;
+}
+
+export interface IUser extends ILoginData {
   id: string;
 }
 
