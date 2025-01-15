@@ -9,8 +9,7 @@
     "start": "concurrently \"npm run backend\" \"npm run frontend\"",
     "lint:fix": "prettier --write backend/src frontend/src && eslint --fix backend/src frontend/src",
     "test:backend": "npm test -w backend",
-    "test:frontend": "npm test -w frontend",
-    "prepare": "husky"
+    "test:frontend": "npm test -w frontend"
   },
   "husky": {
     "hooks": {
