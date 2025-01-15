@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 export const nagerDateConfig = axios.create({
-  baseURL: 'https://date.nager.at',
+  baseURL: import.meta.env.VITE_API_NAGER_BASE_URL,
 });
 
 export const baseConfig = axios.create({
-  baseURL: 'http://localhost:4000/',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
