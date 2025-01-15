@@ -16,3 +16,8 @@ export const validateLoginData = Joi.object<IUserLoginValidateBody>({
 export const validateRefreshData = Joi.object({
   refreshToken: Joi.string().required(),
 });
+
+export const validateUpdateuserInfoData = Joi.object({
+  email: Joi.string().pattern(emailRegex),
+  countryCode: Joi.string(),
+});

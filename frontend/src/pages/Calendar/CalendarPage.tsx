@@ -6,17 +6,19 @@ import { CreateTaskForm } from './parts';
 
 export const CalendarPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { calendar, countries } = useReduxStore();
+  const { calendar, auth, projects } = useReduxStore();
   const previousYearRef = useRef<number | null>(null);
   const previousCountryRef = useRef<string | null>(null);
 
   useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
+    if (!projects.selectedProject) return;
+
+    dispatch(fetchTasks(projects.selectedProject.id));
+  }, [dispatch, projects.selectedProject]);
 
   useEffect(() => {
     const currentYear = calendar.currentMonth.getFullYear();
-    const currentCountryCode = countries.selectedCountry?.countryCode || null;
+    const currentCountryCode = auth.user?.countryCode || null;
 
     if (
       currentCountryCode &&
@@ -32,7 +34,7 @@ export const CalendarPage: FC = () => {
       previousYearRef.current = currentYear;
       previousCountryRef.current = currentCountryCode;
     }
-  }, [calendar.currentMonth, countries.selectedCountry, dispatch]);
+  }, [calendar.currentMonth, auth.user, dispatch]);
 
   return (
     <>
@@ -40,8 +42,8 @@ export const CalendarPage: FC = () => {
       <Modal
         active={Boolean(calendar.selectedDay)}
         setActive={() => dispatch(setSelectedDay(null))}>
-        {!countries.selectedCountry && <p>You need to select a country</p>}
-        {calendar.selectedDay && countries.selectedCountry && <CreateTaskForm />}
+        {!auth.user && <p>You need to select a country</p>}
+        {calendar.selectedDay && auth.user?.countryCode && <CreateTaskForm />}
       </Modal>
       <div id="modal" />
     </>

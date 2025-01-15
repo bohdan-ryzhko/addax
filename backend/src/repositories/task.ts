@@ -1,7 +1,7 @@
 import { ITask } from '../interfaces';
 import { Task } from '../models';
 
-export const findTasks = () => Task.find();
+export const findTasks = (project_id: string) => Task.find({ project_id });
 
 export const findTaskById = (id: string) => Task.findById(id);
 

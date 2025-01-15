@@ -6,6 +6,7 @@ export const validateCreateTaskData = Joi.object<ITaskBody>({
   description: Joi.string().min(10).required(),
   date: Joi.string().required(),
   countryCode: Joi.string().required(),
+  project_id: Joi.string().required(),
 });
 
 export const validateUpdateTaskData = validateCreateTaskData

@@ -30,7 +30,7 @@ type Props = {
 };
 
 export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
-  const { holidays, tasks, countries } = useReduxStore();
+  const { holidays, tasks, auth } = useReduxStore();
   const dispatch = useAppDispatch();
   const currentDays = createCurrentDays(month);
 
@@ -74,7 +74,7 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
 
   const handleDragEnd = (result: DropResult) => {
     console.log('result', result);
-    if (!countries.selectedCountry?.countryCode) return;
+    if (!auth.user?.countryCode) return;
 
     if (!result.destination) return;
     const { source, destination } = result;
@@ -111,7 +111,7 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
         id: result.draggableId,
         date: result.destination.droppableId,
         order: result.destination.index,
-        countryCode: countries.selectedCountry.countryCode,
+        countryCode: auth.user?.countryCode,
         reason: result.reason,
       }),
     );
@@ -162,7 +162,7 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
                         .sort((a, b) => a.order - b.order)
                         .map((task, index) => (
                           <Draggable
-                            isDragDisabled={!countries.selectedCountry}
+                            isDragDisabled={!auth.user?.countryCode}
                             key={task.id}
                             draggableId={task.id}
                             index={index}>

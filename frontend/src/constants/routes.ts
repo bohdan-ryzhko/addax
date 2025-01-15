@@ -1,6 +1,7 @@
 export const routes = {
   base: '/',
   id: '/:id',
-  auth: '/auth',
-  calendar: '/calendar',
+  app: 'app',
+  calendar: 'calendar',
+  settings: 'settings',
 } as const;

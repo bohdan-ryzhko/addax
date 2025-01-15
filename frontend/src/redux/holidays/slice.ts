@@ -11,7 +11,13 @@ const initialState: HolidaysState = {
 const holidaysSlice = createSlice({
   name: 'holidays',
   initialState,
-  reducers: {},
+  reducers: {
+    clearHolidaysState(state) {
+      state.data = initialState.data;
+      state.error = initialState.error;
+      state.fetching = initialState.fetching;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchPublicHolidays.pending, state => {
@@ -30,5 +36,7 @@ const holidaysSlice = createSlice({
       });
   },
 });
+
+export const { clearHolidaysState } = holidaysSlice.actions;
 
 export const holidaysReducer = holidaysSlice.reducer;

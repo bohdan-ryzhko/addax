@@ -6,6 +6,8 @@ import {
   IFetchUserResponse,
   ILoginData,
   IRegistrationData,
+  IUpdateUserInfoResponse,
+  IUser,
 } from '../../interfaces';
 import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
@@ -28,6 +30,9 @@ const AuthEndpoints = {
   logout() {
     return `/${this.api}/${this.v1}/${this.base}/logout`;
   },
+  updateInfo() {
+    return `/${this.api}/${this.v1}/${this.base}/update-info`;
+  },
 };
 
 export const registration = createAsyncThunk<IRegistrationResponse, IRegistrationData>(
@@ -39,7 +44,7 @@ export const registration = createAsyncThunk<IRegistrationResponse, IRegistratio
         payload,
       );
 
-      toast.success('Registration success');
+      toast.success('Registration successfully');
 
       return response.data;
     } catch (error: any) {
@@ -58,7 +63,7 @@ export const login = createAsyncThunk<ILoginResponse, ILoginData>(
         payload,
       );
 
-      toast.success('Login success');
+      toast.success('Login successfully');
 
       return response.data;
     } catch (error: any) {
@@ -91,6 +96,25 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
 
     return response.data;
   } catch (error: any) {
+    return rejectWithValue(error);
+  }
+});
+
+export const updateUserInfo = createAsyncThunk<
+  IUpdateUserInfoResponse,
+  Partial<Pick<IUser, 'countryCode' | 'email'>>
+>('update/user-info', async (payload, { rejectWithValue }) => {
+  try {
+    const response: AxiosResponse<IUpdateUserInfoResponse> = await baseConfig.put(
+      AuthEndpoints.updateInfo(),
+      payload,
+    );
+
+    toast.success('Update info successfully');
+
+    return response.data;
+  } catch (error: any) {
+    toast.error(getErrorMessage(error));
     return rejectWithValue(error);
   }
 });

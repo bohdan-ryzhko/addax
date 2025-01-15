@@ -48,7 +48,14 @@
   gap: 0.5rem;
 }
 
-.logoutBtn {
-  min-width: 8rem !important;
-  max-width: 8rem !important;
+.projectActionsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.createProjectBtn {
+  min-width: auto !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
 }

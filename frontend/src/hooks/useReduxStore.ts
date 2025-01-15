@@ -7,4 +7,5 @@ export const useReduxStore = (): RootState => ({
   holidays: useSelector((state: RootState) => state.holidays),
   calendar: useSelector((state: RootState) => state.calendar),
   tasks: useSelector((state: RootState) => state.tasks),
+  projects: useSelector((state: RootState) => state.projects),
 });

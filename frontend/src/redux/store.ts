@@ -7,6 +7,7 @@ import { holidaysReducer } from './holidays';
 import { calendarReducer } from './calendar';
 import { tasksReducer } from './tasks';
 import { authReducer } from './auth';
+import { projectsReducer } from './projects';
 
 const authPersistConfig = {
   key: 'auth',
@@ -20,6 +21,7 @@ export const reducer = combineReducers({
   holidays: holidaysReducer,
   calendar: calendarReducer,
   tasks: tasksReducer,
+  projects: projectsReducer,
 });
 
 export const store = configureStore({

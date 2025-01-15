@@ -18,21 +18,22 @@ const initialValues: CreateTaskValues = {
 };
 
 export const CreateTaskForm: FC = () => {
-  const { calendar, countries, tasks } = useReduxStore();
+  const { calendar, auth, tasks, projects } = useReduxStore();
   const dispatch = useAppDispatch();
 
   const onSubmit = async (
     values: CreateTaskValues,
     { resetForm }: FormikHelpers<CreateTaskValues>,
   ) => {
-    if (!calendar.selectedDay || !countries.selectedCountry) return;
+    if (!calendar.selectedDay || !auth.user?.countryCode || !projects.selectedProject) return;
 
     const createdTaskResponse = await dispatch(
       createTask({
         name: values.name,
         description: values.description,
         date: getFormattedDate(calendar.selectedDay),
-        countryCode: countries.selectedCountry.countryCode,
+        countryCode: auth.user?.countryCode,
+        project_id: projects.selectedProject.id,
       }),
     ).then(unwrapResult);
 

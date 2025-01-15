@@ -83,3 +83,18 @@ export const userLogout = ctrlWrapper(async (req: UserRequest, res) => {
 
   res.status(200).json({});
 });
+
+export const updateUser = ctrlWrapper(async (req: UserRequest, res) => {
+  const user = req.user;
+  const updatedInfo = req.body;
+
+  if (!user) throw HttpError({ status: 401 });
+
+  const updatedUser = await updateUserById(user._id.toString(), updatedInfo);
+
+  if (!updatedUser) throw HttpError({ status: 500 });
+
+  const data = UserDto(updatedUser);
+
+  res.status(201).json({ data: { user: data } });
+});

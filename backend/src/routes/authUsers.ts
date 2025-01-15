@@ -1,8 +1,13 @@
 import express from 'express';
 import { routes } from '../constants';
 import { authenticate, validateBody } from '../middlewares';
-import { userRegistration, userLogin, userRefresh, userLogout } from '../controllers';
-import { validateRegistrationData, validateRefreshData, validateLoginData } from '../schemas';
+import { userRegistration, userLogin, userRefresh, userLogout, updateUser } from '../controllers';
+import {
+  validateRegistrationData,
+  validateRefreshData,
+  validateLoginData,
+  validateUpdateuserInfoData,
+} from '../schemas';
 
 export const authUsersRouter = express.Router();
 
@@ -15,3 +20,7 @@ authUsersRouter.route(routes.auth.login).post(validateBody(validateLoginData), u
 authUsersRouter.route(routes.auth.refresh).post(validateBody(validateRefreshData), userRefresh);
 
 authUsersRouter.route(routes.auth.logout).post(authenticate, userLogout);
+
+authUsersRouter
+  .route(routes.auth.updateInfo)
+  .put(authenticate, validateBody(validateUpdateuserInfoData), updateUser);

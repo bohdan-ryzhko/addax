@@ -17,6 +17,11 @@ const taskSchema = new Schema<ITask>({
   order: {
     type: Number,
   },
+  project_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Project',
+    required: [true, 'Project ID is required'],
+  },
 });
 
 export const Task = model<ITask>('Task', taskSchema);

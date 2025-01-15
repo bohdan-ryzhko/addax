@@ -9,7 +9,7 @@ export interface IRegistrationData extends ILoginData {
   countryCode: string;
 }
 
-export interface IUser extends ILoginData {
+export interface IUser extends IRegistrationData {
   id: string;
 }
 
@@ -32,3 +32,5 @@ export interface IFetchUserResponse extends BaseResponse<IUserData> {}
 export interface ILoginResponse extends BaseResponse<IUserData> {}
 
 export interface IRegistrationResponse extends BaseResponse<IUserData> {}
+
+export interface IUpdateUserInfoResponse extends BaseResponse<Pick<IUserData, 'user'>> {}

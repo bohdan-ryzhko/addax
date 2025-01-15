@@ -30,7 +30,7 @@ export const TextArea: FC<Props> = ({ label, name, formik, className, ...props }
           {...props}
         />
       </label>
-      {isError && <span className={styles.errorText}>{errorMessage}</span>}
+      {isError && <span className="errorText">{errorMessage}</span>}
     </div>
   );
 };

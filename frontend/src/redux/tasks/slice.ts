@@ -32,6 +32,12 @@ const tasksSlice = createSlice({
         return task;
       });
     },
+    clearTasksState(state) {
+      state.data = initialState.data;
+      state.error = initialState.error;
+      state.fetching = initialState.fetching;
+      state.creating = initialState.creating;
+    },
   },
   extraReducers: builder => {
     builder
@@ -78,6 +84,6 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { updateDndTasksById } = tasksSlice.actions;
+export const { updateDndTasksById, clearTasksState } = tasksSlice.actions;
 
 export const tasksReducer = tasksSlice.reducer;

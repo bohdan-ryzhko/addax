@@ -13,6 +13,7 @@ export type CreateTaskValues = Pick<Task, 'name' | 'description'>;
 export type CreateTaskPayload = Pick<Task, 'date'> &
   CreateTaskValues & {
     countryCode: string;
+    project_id: string;
   };
 
 export interface ICreateTaskResponse extends BaseResponse<Task> {}

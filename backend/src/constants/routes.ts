@@ -6,5 +6,6 @@ export const routes = {
     login: '/login',
     refresh: '/refresh',
     logout: '/logout',
+    updateInfo: '/update-info',
   },
 } as const;

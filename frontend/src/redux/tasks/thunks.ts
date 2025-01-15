@@ -18,12 +18,12 @@ const TasksEndpoints = {
   },
 };
 
-export const fetchTasks = createAsyncThunk<IFetchTaskResponse>(
+export const fetchTasks = createAsyncThunk<IFetchTaskResponse, string>(
   'fetch/tasks',
-  async (_, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
       const response: AxiosResponse<IFetchTaskResponse> = await baseConfig.get(
-        TasksEndpoints.tasks(),
+        TasksEndpoints.tasksId(id),
       );
 
       return response.data;

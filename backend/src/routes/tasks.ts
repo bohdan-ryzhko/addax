@@ -8,9 +8,9 @@ export const tasksRouter = express.Router();
 
 tasksRouter
   .route(routes.base)
-  .get(getTasks)
   .post(authenticate, validateBody(validateCreateTaskData), checkIsHoliday, createTask);
 
 tasksRouter
   .route(routes.id)
+  .get(authenticate, getTasks)
   .put(authenticate, validateBody(validateUpdateTaskData), checkIsHoliday, updateTask);

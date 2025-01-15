@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useFormik } from 'formik';
 
 import { useReduxStore } from '../../../../hooks';
@@ -37,10 +37,14 @@ export const AuthComponent: FC<Props> = ({ onSubmit, title, buttonText }) => {
     validationSchema: iRegistration ? validationRegistrationSchema : validationLoginSchema,
   });
 
-  const dropdownList = countries.data.map(({ countryCode, name }) => ({
-    id: countryCode,
-    label: name,
-  }));
+  const dropdownList = useMemo(
+    () =>
+      countries.data.map(({ countryCode, name }) => ({
+        id: countryCode,
+        label: name,
+      })),
+    [countries.data],
+  );
 
   return (
     <div className={styles.container}>

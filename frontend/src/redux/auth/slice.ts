@@ -1,6 +1,6 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { AuthState } from '../../interfaces';
-import { login, logout, refresh, registration } from './thunks';
+import { login, logout, refresh, registration, updateUserInfo } from './thunks';
 import { baseConfig } from '../../lib';
 
 export const setAuthHeader = (token: string) => {
@@ -52,7 +52,10 @@ const authSlice = createSlice({
         state.accessToken = initialState.accessToken;
         state.refreshToken = initialState.refreshToken;
       })
-      .addMatcher(isAnyOf(registration.pending, login.pending), state => {
+      .addCase(updateUserInfo.fulfilled, (state, action) => {
+        state.user = action.payload.data.user;
+      })
+      .addMatcher(isAnyOf(registration.pending, login.pending, updateUserInfo.pending), state => {
         state.loading = true;
       })
       .addMatcher(isAnyOf(refresh.pending), state => {
@@ -68,15 +71,21 @@ const authSlice = createSlice({
         state.accessToken = null;
         state.refreshToken = null;
       })
-      .addMatcher(isAnyOf(registration.fulfilled, login.fulfilled), state => {
-        state.loading = false;
-        state.error = null;
-      })
-      .addMatcher(isAnyOf(registration.rejected, login.rejected), (state, action) => {
-        state.refreshing = false;
-        state.loading = false;
-        state.error = action.error;
-      })
+      .addMatcher(
+        isAnyOf(registration.fulfilled, login.fulfilled, updateUserInfo.pending),
+        state => {
+          state.loading = false;
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        isAnyOf(registration.rejected, login.rejected, updateUserInfo.rejected),
+        (state, action) => {
+          state.refreshing = false;
+          state.loading = false;
+          state.error = action.error;
+        },
+      )
       .addMatcher(isAnyOf(logout.fulfilled, logout.rejected), () => {
         clearAuthHeader();
       });

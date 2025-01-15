@@ -1,10 +1,10 @@
-import { FC } from 'react';
-import { CalendarDays } from './parts';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { CalendarDays, CreateProjectForm } from './parts';
 import { useAppDispatch, useReduxStore } from '../../hooks';
-import { logout, setCurrentMonth, setSelectedDay } from '../../redux';
+import { fetchProjects, selectProject, setCurrentMonth, setSelectedDay } from '../../redux';
 import { months, weekdays } from '../../constants';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { Button } from '../index';
+import { Button, Dropdown, Modal } from '../index';
 
 import styles from './calendar.module.scss';
 
@@ -12,8 +12,15 @@ const monthsArray = Object.values(months);
 const weekdaysArray = Object.values(weekdays);
 
 export const Calendar: FC = () => {
-  const { calendar, auth } = useReduxStore();
+  const { calendar, auth, projects } = useReduxStore();
   const dispatch = useAppDispatch();
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!auth.user) return;
+
+    dispatch(fetchProjects());
+  }, [auth.user, dispatch, projects.selectedProject]);
 
   const currentYear = calendar.currentMonth.getFullYear();
 
@@ -30,6 +37,15 @@ export const Calendar: FC = () => {
         ),
       );
     };
+
+  const listDropdownProjects = useMemo(
+    () =>
+      projects.data.map(project => ({
+        id: project.id,
+        label: project.name,
+      })),
+    [projects.data],
+  );
 
   return (
     <>
@@ -48,29 +64,52 @@ export const Calendar: FC = () => {
               {monthsArray[calendar.currentMonth.getMonth()]} {currentYear}
             </h2>
           </div>
-          <Button
-            loading={auth.loading || auth.refreshing}
-            text={'Logout'}
-            className={styles.logoutBtn}
-            onClick={() => dispatch(logout())}
-          />
-        </div>
-        <div className={styles.calendarBody}>
-          <div className={styles.tableHeader}>
-            {weekdaysArray.map(weekday => (
-              <div key={weekday} className={styles.weekday}>
-                <p>{weekday}</p>
-              </div>
-            ))}
+          <div className={styles.projectActionsWrapper}>
+            <Button
+              text={'Create project'}
+              className={styles.createProjectBtn}
+              onClick={() => setIsCreateProjectModalOpen(true)}
+            />
+            <Dropdown
+              list={listDropdownProjects}
+              element={({ label }) => <p className="interactive">{label}</p>}
+              onChange={project =>
+                dispatch(
+                  selectProject({
+                    name: project.label,
+                    id: project.id,
+                  }),
+                )
+              }
+              label="Select project"
+            />
           </div>
-          <CalendarDays
-            month={calendar.currentMonth}
-            changeCurrentDay={day =>
-              dispatch(setSelectedDay(new Date(day.year, day.month, day.number)))
-            }
-          />
         </div>
+        {projects.selectedProject !== null ? (
+          <div className={styles.calendarBody}>
+            <div className={styles.tableHeader}>
+              {weekdaysArray.map(weekday => (
+                <div key={weekday} className={styles.weekday}>
+                  <p>{weekday}</p>
+                </div>
+              ))}
+            </div>
+            <CalendarDays
+              month={calendar.currentMonth}
+              changeCurrentDay={day =>
+                dispatch(setSelectedDay(new Date(day.year, day.month, day.number)))
+              }
+            />
+          </div>
+        ) : (
+          <div className="center full">
+            <p>Select the project</p>
+          </div>
+        )}
       </div>
+      <Modal active={isCreateProjectModalOpen} setActive={setIsCreateProjectModalOpen}>
+        <CreateProjectForm setIsCreateProjectModalOpen={setIsCreateProjectModalOpen} />
+      </Modal>
     </>
   );
 };

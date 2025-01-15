@@ -5,6 +5,4 @@ export type Country = {
   name: string;
 };
 
-export interface CountriesState extends BaseSliceState<Country[]> {
-  selectedCountry: Country | null;
-}
+export interface CountriesState extends BaseSliceState<Country[]> {}

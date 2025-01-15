@@ -1,20 +1,21 @@
-import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
-import { CountriesState, Country } from '../../interfaces';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { CountriesState } from '../../interfaces';
 import { fetchAvailableCountries } from './thunks';
 
 const initialState: CountriesState = {
   fetching: false,
   data: [],
   error: null,
-  selectedCountry: null,
 };
 
 const countriesSlice = createSlice({
   name: 'countries',
   initialState,
   reducers: {
-    setSelectedCountry(state, action: PayloadAction<Country>) {
-      state.selectedCountry = action.payload;
+    clearCountriesState(state) {
+      state.data = initialState.data;
+      state.error = initialState.error;
+      state.fetching = initialState.fetching;
     },
   },
   extraReducers: builder => {
@@ -36,6 +37,6 @@ const countriesSlice = createSlice({
   },
 });
 
-export const { setSelectedCountry } = countriesSlice.actions;
+export const { clearCountriesState } = countriesSlice.actions;
 
 export const countriesReducer = countriesSlice.reducer;

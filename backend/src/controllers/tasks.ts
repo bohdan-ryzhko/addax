@@ -1,12 +1,23 @@
+import { AxiosResponse } from 'axios';
 import { TaskDto } from '../dtos';
 import { Holiday, ITaskBody, ITaskUpdateBody } from '../interfaces';
-import { addTask, findTaskById, findTasks, findTasksByDate, updateTaskById } from '../repositories';
+import {
+  addTask,
+  findProjectById,
+  findTaskById,
+  findTasks,
+  findTasksByDate,
+  updateTaskById,
+} from '../repositories';
 import { ctrlWrapper, HttpError } from '../utils';
 import { nagerDateConfig } from '../lib';
-import { AxiosResponse } from 'axios';
 
 export const getTasks = ctrlWrapper(async (req, res) => {
-  const tasks = await findTasks();
+  const projectId = req.params?.id;
+
+  if (!projectId) throw HttpError({ status: 400, message: 'Project ID is required' });
+
+  const tasks = await findTasks(projectId);
 
   const data = tasks.map(TaskDto);
 
@@ -34,11 +45,21 @@ export const checkIsHoliday = ctrlWrapper(async (req, res, next) => {
 });
 
 export const createTask = ctrlWrapper(async (req, res) => {
-  const { name, description, date }: ITaskBody = req.body;
+  const { name, description, date, project_id }: ITaskBody = req.body;
+
+  const foundProject = await findProjectById(project_id);
+
+  if (!foundProject) throw HttpError({ status: 404, message: 'Project not found' });
 
   const existingTasksByDate = await findTasksByDate(date);
 
-  const createdTask = await addTask({ name, description, date, order: existingTasksByDate.length });
+  const createdTask = await addTask({
+    name,
+    description,
+    project_id: foundProject._id,
+    date,
+    order: existingTasksByDate.length,
+  });
 
   await createdTask.save();
 
