@@ -1,4 +1,4 @@
-import app from './app';
+import app from '../app';
 import mongoose from 'mongoose';
 
 const port = 4000;
