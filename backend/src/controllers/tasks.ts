@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { TaskDto } from '../dtos';
-import { Holiday, ITaskBody, ITaskUpdateBody } from '../interfaces';
+import { Holiday, ITaskBody, ITaskDTO, ITaskUpdateBody } from '../interfaces';
 import {
   addTask,
   findProjectById,
@@ -11,6 +11,7 @@ import {
 } from '../repositories';
 import { ctrlWrapper, HttpError } from '../utils';
 import { nagerDateConfig } from '../lib';
+import { Types } from 'mongoose';
 
 export const getTasks = ctrlWrapper(async (req, res) => {
   const projectId = req.params?.id;
@@ -75,8 +76,6 @@ export const updateTask = ctrlWrapper(async (req, res) => {
 
   const task: ITaskUpdateBody = req.body;
 
-  console.log('task', task);
-
   if (!taskId) throw HttpError({ status: 400, message: 'Task ID is required params' });
 
   const foundTask = await findTaskById(taskId);
@@ -87,17 +86,31 @@ export const updateTask = ctrlWrapper(async (req, res) => {
 
   if (!updatedTask) throw HttpError({ status: 500 });
 
-  if (task.reason === 'DROP') {
-    const foundTasksByDate = await findTasksByDate(task.date);
-
-    await Promise.all(
-      foundTasksByDate
-        .filter(task => task._id.toString() !== taskId)
-        .map(async task => await updateTaskById(task._id.toString(), { order: task.order - 1 })),
-    );
-  }
-
   const data = TaskDto(updatedTask);
 
   res.status(200).json({ data });
+});
+
+export const updateDndTasks = ctrlWrapper(async (req, res) => {
+  const newTasks: { tasks: ITaskDTO[] } = req.body;
+
+  const data = await Promise.all(
+    newTasks.tasks.map(async ({ id, ...task }) => {
+      const foundTask = await findTaskById(id);
+
+      if (!foundTask)
+        throw HttpError({ status: 404, message: `Task ${task.name || id} not found` });
+
+      const updatedTask = await updateTaskById(foundTask._id.toString(), {
+        ...task,
+        project_id: new Types.ObjectId(task.project_id),
+      });
+
+      if (!updatedTask) throw HttpError({ status: 500 });
+
+      return TaskDto(updatedTask);
+    }),
+  );
+
+  res.status(201).json({ data });
 });

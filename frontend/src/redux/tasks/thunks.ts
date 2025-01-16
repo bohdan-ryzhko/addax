@@ -2,7 +2,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 
-import { CreateTaskPayload, ICreateTaskResponse, IFetchTaskResponse, Task } from '../../interfaces';
+import {
+  CreateTaskPayload,
+  ICreateTaskResponse,
+  IFetchTaskResponse,
+  UpdateDndTasksPayload,
+  UpdateTaskByIdPayload,
+} from '../../interfaces';
 import { baseConfig } from '../../lib';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../utils';
@@ -15,6 +21,9 @@ const TasksEndpoints = {
   },
   tasksId(id: string) {
     return `${this.api}/${this.v1}/tasks/${id}`;
+  },
+  tasksDnd() {
+    return `${this.api}/${this.v1}/tasks/dnd`;
   },
 };
 
@@ -53,23 +62,42 @@ export const createTask = createAsyncThunk<ICreateTaskResponse, CreateTaskPayloa
   },
 );
 
-export const updateTaskById = createAsyncThunk<
-  ICreateTaskResponse,
-  Partial<Task> & Pick<Task, 'id'> & { countryCode: string; reason?: string }
->('update/task', async (payload, { rejectWithValue }) => {
-  try {
-    const { id, ...body } = payload;
+export const updateTaskById = createAsyncThunk<ICreateTaskResponse, UpdateTaskByIdPayload>(
+  'update/task',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { id, ...body } = payload;
 
-    const response: AxiosResponse<ICreateTaskResponse> = await baseConfig.put(
-      TasksEndpoints.tasksId(id),
-      body,
-    );
+      const response: AxiosResponse<ICreateTaskResponse> = await baseConfig.put(
+        TasksEndpoints.tasksId(id),
+        body,
+      );
 
-    toast.success('Task was updated successfully!');
+      toast.success('Task was updated successfully!');
 
-    return response.data;
-  } catch (error: any) {
-    toast.error(getErrorMessage(error));
-    return rejectWithValue(error);
-  }
-});
+      return response.data;
+    } catch (error: any) {
+      toast.error(getErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const updateDndTasks = createAsyncThunk<IFetchTaskResponse, UpdateDndTasksPayload>(
+  'update/dnd-tasks',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const resonse: AxiosResponse<IFetchTaskResponse> = await baseConfig.post(
+        TasksEndpoints.tasksDnd(),
+        payload,
+      );
+
+      toast.success('Task was updated successfully!');
+
+      return resonse.data;
+    } catch (error: any) {
+      toast.error(getErrorMessage(error));
+      return rejectWithValue(error);
+    }
+  },
+);

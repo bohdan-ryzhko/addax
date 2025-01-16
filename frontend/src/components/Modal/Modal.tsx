@@ -1,6 +1,6 @@
 import { Dispatch, FC, PropsWithChildren, SetStateAction, useEffect, useState } from 'react';
 import ReactDom from 'react-dom';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { IoMdClose } from 'react-icons/io';
 
 import styles from './modal.module.scss';

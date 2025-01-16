@@ -8,4 +8,7 @@ export const routes = {
     logout: '/logout',
     updateInfo: '/update-info',
   },
+  tasks: {
+    dnd: '/dnd',
+  },
 } as const;

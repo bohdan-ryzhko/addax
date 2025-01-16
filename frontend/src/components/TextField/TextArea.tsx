@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, FC, TextareaHTMLAttributes } from 'react';
 import { FormikValues } from 'formik';
-import classNames from 'classNames';
+import classNames from 'classnames';
 
 import styles from './textField.module.scss';
 

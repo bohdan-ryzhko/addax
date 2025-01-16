@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { GoPlus } from 'react-icons/go';
@@ -8,9 +8,9 @@ import { createCurrentDays } from '../../utils';
 import { useAppDispatch, useReduxStore } from '../../../../hooks';
 import { getFormattedDate } from '../../../../utils';
 import { Task } from '../../../../interfaces';
+import { updateDndTasksById, updateDndTasks } from '../../../../redux';
 
 import styles from './calendar-days.module.scss';
-import { updateDndTasksById, updateTaskById } from '../../../../redux';
 
 const today = new Date();
 const formattedToday = getFormattedDate(today);
@@ -73,7 +73,6 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
   );
 
   const handleDragEnd = (result: DropResult) => {
-    console.log('result', result);
     if (!auth.user?.countryCode) return;
 
     if (!result.destination) return;
@@ -86,35 +85,58 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
     const sourceDate = source.droppableId;
     const destDate = destination.droppableId;
 
-    const sourceTasks = Array.from(tasksMap.get(sourceDate) || []);
-    const destTasks = Array.from(tasksMap.get(destDate) || []);
+    const isDestDateIsHoliday = holidays.data.find(({ date }) => date === destDate);
+
+    if (isDestDateIsHoliday) {
+      toast.info('Today is holiday');
+      return;
+    }
+
+    const sourceTasks = [...(tasksMap.get(sourceDate) || [])];
+    const destTasks = [...(tasksMap.get(destDate) || [])];
     const [movedTask] = sourceTasks.splice(source.index, 1);
 
     if (sourceDate === destDate) {
       sourceTasks.splice(destination.index, 0, movedTask);
-      tasksMap.set(sourceDate, sourceTasks);
-    } else {
-      destTasks.splice(destination.index, 0, movedTask);
-      tasksMap.set(sourceDate, sourceTasks);
-      tasksMap.set(destDate, destTasks);
+
+      const updatedTasks = sourceTasks.map((task, index) => ({
+        ...task,
+        order: index,
+      }));
+
+      dispatch(updateDndTasksById({ date: sourceDate, tasks: updatedTasks }));
+      dispatch(updateDndTasks({ tasks: updatedTasks }));
+      return;
     }
+
+    destTasks.splice(destination.index, 0, movedTask);
+
+    const updatedSourceTasks = sourceTasks.map((task, index) => ({
+      ...task,
+      order: index,
+    }));
+
+    const updatedDestTasks = destTasks.map((task, index) => ({
+      ...task,
+      date: destDate,
+      order: index,
+    }));
 
     dispatch(
       updateDndTasksById({
-        id: result.draggableId,
-        order: result.destination.index,
+        date: sourceDate,
+        tasks: updatedSourceTasks,
       }),
     );
 
     dispatch(
-      updateTaskById({
-        id: result.draggableId,
-        date: result.destination.droppableId,
-        order: result.destination.index,
-        countryCode: auth.user?.countryCode,
-        reason: result.reason,
+      updateDndTasksById({
+        date: destDate,
+        tasks: updatedDestTasks,
       }),
     );
+
+    dispatch(updateDndTasks({ tasks: [...updatedSourceTasks, ...updatedDestTasks] }));
   };
 
   return (
@@ -158,25 +180,23 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
                     ref={provided.innerRef}
                     className={styles.tasksList}>
                     {tasksList &&
-                      [...tasksList]
-                        .sort((a, b) => a.order - b.order)
-                        .map((task, index) => (
-                          <Draggable
-                            isDragDisabled={!auth.user?.countryCode}
-                            key={task.id}
-                            draggableId={task.id}
-                            index={index}>
-                            {provided => (
-                              <li
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                ref={provided.innerRef}
-                                className={styles.taskItem}>
-                                <p className={styles.description}>{task.description}</p>
-                              </li>
-                            )}
-                          </Draggable>
-                        ))}
+                      tasksList.map((task, index) => (
+                        <Draggable
+                          isDragDisabled={!auth.user?.countryCode}
+                          key={task.id}
+                          draggableId={task.id}
+                          index={index}>
+                          {provided => (
+                            <li
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                              className={styles.taskItem}>
+                              <p className={styles.description}>{task.description}</p>
+                            </li>
+                          )}
+                        </Draggable>
+                      ))}
                     {provided.placeholder}
                   </ul>
                 )}
