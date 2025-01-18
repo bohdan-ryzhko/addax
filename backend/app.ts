@@ -7,9 +7,16 @@ import { errorHandler, notFound } from './src/middlewares';
 
 dotenv.config();
 
+const { CLIENT_URL = '' } = process.env;
+
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: CLIENT_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }),
+);
 app.use(express.json());
 
 // auth
