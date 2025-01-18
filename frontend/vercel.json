@@ -1,9 +1,11 @@
 {
-  "builds": [
+  "buildCommand": "vite build",
+  "installCommand": "npm install",
+  "outputDirectory": "dist",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/"
     }
-  ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  ]
 }
