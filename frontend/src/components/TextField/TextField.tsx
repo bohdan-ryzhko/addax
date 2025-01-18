@@ -35,6 +35,7 @@ export const TextField: FC<Props> = ({
           onBlur={formik.handleBlur}
           name={name}
           id={name}
+          value={formik.values[name]}
           {...props}
         />
       </label>

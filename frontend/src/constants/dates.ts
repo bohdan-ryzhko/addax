@@ -1,13 +1,13 @@
 import { UnionFromObject } from '../interfaces';
 
 export const weekdays = {
-  Sun: 'Sunday',
   Mon: 'Monday',
   Tue: 'Tuesday',
   Wed: 'Wednesday',
   Thu: 'Thursday',
   Fri: 'Friday',
   Sat: 'Saturday',
+  Sun: 'Sunday',
 } as const;
 
 export const months = {

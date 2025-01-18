@@ -20,7 +20,7 @@ export const getTasks = ctrlWrapper(async (req, res) => {
 
   const tasks = await findTasks(projectId);
 
-  const data = tasks.map(TaskDto);
+  const data = tasks.map(TaskDto).toSorted((a, b) => a.order - b.order);
 
   res.status(200).json({ data });
 });

@@ -27,6 +27,7 @@ export const TextArea: FC<Props> = ({ label, name, formik, className, ...props }
           className={classNames(styles.textarea, className)}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          value={formik.values[name]}
           {...props}
         />
       </label>

@@ -8,7 +8,7 @@ import { createCurrentDays } from '../../utils';
 import { useAppDispatch, useReduxStore } from '../../../../hooks';
 import { getFormattedDate } from '../../../../utils';
 import { Task } from '../../../../interfaces';
-import { updateDndTasksById, updateDndTasks } from '../../../../redux';
+import { updateDndTasksById, updateDndTasks, selectTask } from '../../../../redux';
 
 import styles from './calendar-days.module.scss';
 
@@ -190,9 +190,10 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
                             <li
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
+                              onClick={() => dispatch(selectTask(task))}
                               ref={provided.innerRef}
                               className={styles.taskItem}>
-                              <p className={styles.description}>{task.description}</p>
+                              <p className={styles.description}>{task.name}</p>
                             </li>
                           )}
                         </Draggable>

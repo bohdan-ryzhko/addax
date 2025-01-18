@@ -18,7 +18,7 @@ export type CreateTaskPayload = Pick<Task, 'date'> &
   };
 
 export type UpdateTaskByIdPayload = Partial<Task> &
-  Pick<Task, 'id'> & { countryCode: string; reason?: string };
+  Pick<Task, 'id'> & { date: string; countryCode: string; reason?: string };
 
 export type UpdateDndTasksPayload = {
   tasks: Task[];
@@ -31,4 +31,5 @@ export interface IFetchTaskResponse extends BaseResponse<Task[]> {}
 export interface TasksState extends BaseSliceState<Task[]> {
   creating: boolean;
   updating: boolean;
+  selectedTask: Task | null;
 }

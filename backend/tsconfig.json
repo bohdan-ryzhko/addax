@@ -7,7 +7,8 @@
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2023.Array", "DOM", "ESNext"]
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
