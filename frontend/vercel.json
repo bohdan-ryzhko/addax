@@ -6,7 +6,6 @@
     }
   ],
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "routes": [
     {
       "src": "/[^.]+",
