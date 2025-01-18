@@ -1,3 +1,5 @@
+@import '../../scss/variables.scss';
+
 .calendar {
   width: 100%;
   height: 100%;
@@ -58,4 +60,44 @@
   min-width: auto !important;
   padding-left: 1rem !important;
   padding-right: 1rem !important;
+}
+
+.projectItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.deleteProjectModalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.deleteTitle {
+  & > span {
+    font-weight: 700;
+  }
+}
+
+.deltedActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  & > button {
+    flex: 1;
+  }
+}
+
+.cancelBtn {
+  min-width: auto !important;
+}
+
+.deleteButton {
+  height: 100%;
+  padding: 0.8rem 0 !important;
+  background-color: $delete_color;
+  color: #fff;
 }

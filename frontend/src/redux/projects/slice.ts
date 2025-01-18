@@ -1,10 +1,11 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import { Project, PropjectsState } from '../../interfaces';
-import { createProject, fetchProjects } from './thunks';
+import { createProject, deleteProject, fetchProjects } from './thunks';
 
 const initialState: PropjectsState = {
   fetching: false,
   creating: false,
+  deleting: false,
   data: [],
   selectedProject: null,
   error: null,
@@ -33,22 +34,36 @@ const projectsSlice = createSlice({
       .addCase(createProject.pending, state => {
         state.creating = true;
       })
+      .addCase(deleteProject.pending, state => {
+        state.deleting = true;
+      })
+      .addCase(deleteProject.fulfilled, (state, action) => {
+        state.data = state.data.filter(project => project.id !== action.payload);
+      })
       .addCase(fetchProjects.fulfilled, (state, action) => {
         state.data = action.payload.data;
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.data.push(action.payload.data);
       })
-      .addMatcher(isAnyOf(fetchProjects.fulfilled, createProject.fulfilled), state => {
-        state.fetching = false;
-        state.creating = false;
-        state.error = null;
-      })
-      .addMatcher(isAnyOf(fetchProjects.rejected, createProject.rejected), (state, action) => {
-        state.fetching = false;
-        state.creating = false;
-        state.error = action.error;
-      });
+      .addMatcher(
+        isAnyOf(fetchProjects.fulfilled, createProject.fulfilled, deleteProject.fulfilled),
+        state => {
+          state.fetching = false;
+          state.creating = false;
+          state.deleting = false;
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        isAnyOf(fetchProjects.rejected, createProject.rejected, deleteProject.rejected),
+        (state, action) => {
+          state.fetching = false;
+          state.creating = false;
+          state.deleting = false;
+          state.error = action.error;
+        },
+      );
   },
 });
 

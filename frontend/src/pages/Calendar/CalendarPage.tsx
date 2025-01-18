@@ -48,7 +48,7 @@ export const CalendarPage: FC = () => {
 
   return (
     <>
-      {tasks.fetching && <LoadingScreen />}
+      {(tasks.fetching || projects.deleting || tasks.deleting) && <LoadingScreen />}
       <Calendar />
       <Modal
         active={Boolean(calendar.selectedDay) || Boolean(tasks.selectedTask)}

@@ -3,6 +3,7 @@ import { TaskDto } from '../dtos';
 import { Holiday, ITaskBody, ITaskDTO, ITaskUpdateBody } from '../interfaces';
 import {
   addTask,
+  deleteTaskById,
   findProjectById,
   findTaskById,
   findTasks,
@@ -113,4 +114,18 @@ export const updateDndTasks = ctrlWrapper(async (req, res) => {
   );
 
   res.status(201).json({ data });
+});
+
+export const deleteTask = ctrlWrapper(async (req, res) => {
+  const taskId = req.params?.id;
+
+  const foundTask = await findTaskById(taskId);
+
+  if (!foundTask) throw HttpError({ status: 404, message: 'Task not found' });
+
+  const deletedTask = await deleteTaskById(taskId);
+
+  if (!deletedTask) throw HttpError({ status: 500 });
+
+  res.status(204).json({});
 });

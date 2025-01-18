@@ -193,7 +193,7 @@ export const CalendarDays: FC<Props> = ({ month, changeCurrentDay }) => {
                               onClick={() => dispatch(selectTask(task))}
                               ref={provided.innerRef}
                               className={styles.taskItem}>
-                              <p className={styles.description}>{task.name}</p>
+                              <p className={styles.taskName}>{task.name}</p>
                             </li>
                           )}
                         </Draggable>

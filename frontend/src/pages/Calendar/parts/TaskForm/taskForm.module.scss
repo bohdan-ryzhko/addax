@@ -1,5 +1,28 @@
+@import '../../../../scss/variables.scss';
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.btnSubmit {
+  min-width: auto;
+}
+
+.formActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  & > button {
+    flex: 1;
+  }
+}
+
+.deleteButton {
+  height: 100%;
+  padding: 0.8rem 0 !important;
+  background-color: $delete_color;
+  color: #fff;
 }

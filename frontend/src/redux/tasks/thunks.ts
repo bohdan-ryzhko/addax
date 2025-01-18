@@ -101,3 +101,18 @@ export const updateDndTasks = createAsyncThunk<IFetchTaskResponse, UpdateDndTask
     }
   },
 );
+
+export const deleteTask = createAsyncThunk<string, string>(
+  'delete/task',
+  async (id, { rejectWithValue }) => {
+    try {
+      await baseConfig.delete(TasksEndpoints.tasksId(id));
+
+      toast.info('Task was deleted successfully');
+
+      return id;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);

@@ -10,6 +10,7 @@ export type CreateProjectValues = Pick<Project, 'name'>;
 export interface PropjectsState extends BaseSliceState<Project[]> {
   selectedProject: Project | null;
   creating: boolean;
+  deleting: boolean;
 }
 
 export interface IFetchProjectsResponse extends BaseResponse<Project[]> {}

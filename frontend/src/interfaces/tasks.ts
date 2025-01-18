@@ -31,5 +31,6 @@ export interface IFetchTaskResponse extends BaseResponse<Task[]> {}
 export interface TasksState extends BaseSliceState<Task[]> {
   creating: boolean;
   updating: boolean;
+  deleting: boolean;
   selectedTask: Task | null;
 }

@@ -1,12 +1,18 @@
+@import '../../scss/variables.scss';
+
 .button {
   min-width: 100%;
-  padding: 12px 0;
+  padding: 0.8rem 0;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
-  background-color: #30b0c7;
+  border-radius: 0.4rem;
+  background-color: $accent_color;
   color: #ffffff;
   display: inline-block;
+
+  &:hover {
+    background-color: $hover_accent_color;
+  }
 
   & > span {
     position: relative;

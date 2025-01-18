@@ -16,6 +16,9 @@ const ProjectsEndpoints = {
   projects() {
     return `${this.api}/${this.v1}/projects`;
   },
+  projectsId(id: string) {
+    return `${this.api}/${this.v1}/projects/${id}`;
+  },
 };
 
 export const fetchProjects = createAsyncThunk<IFetchProjectsResponse>(
@@ -46,6 +49,21 @@ export const createProject = createAsyncThunk<ICreateProjectsResponse, CreatePro
       toast.success('Project was created successfully');
 
       return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const deleteProject = createAsyncThunk<string, string>(
+  'delte/project',
+  async (id, { rejectWithValue }) => {
+    try {
+      await baseConfig.delete(ProjectsEndpoints.projectsId(id));
+
+      toast.info('Project was deleted successfully');
+
+      return id;
     } catch (error: any) {
       return rejectWithValue(error);
     }
