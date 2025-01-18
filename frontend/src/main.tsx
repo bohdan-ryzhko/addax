@@ -11,7 +11,7 @@ import './index.css';
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter basename={import.meta.env.VITE_API_BASE_NAME}>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </PersistGate>
